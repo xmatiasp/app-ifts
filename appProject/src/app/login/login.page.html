@@ -1,0 +1,41 @@
+
+
+<ion-content [fullscreen]="true">
+  <div class="header">
+    <ion-text><h2 class="title">¡Bienvenido de vuelta!</h2></ion-text>
+    <ion-img src="assets/password.png"/>
+    <p class="subTitle">Ingresa para acceder a tu cuenta</p>
+  </div>
+
+  <form [formGroup]="credentials" (ngSubmit)="login()">
+    <div class="ion-padding">
+      <ion-item >
+        <ion-input type="email" placeholder="Email" formControlName="email" class="input"></ion-input>
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-item>
+      <ion-note  *ngIf="(email.dirty || email.touched) && email.errors" color="danger">Email invalido</ion-note>
+
+      <ion-item>
+        <ion-input type="password" placeholder="Password" formControlName="password" class="input"></ion-input>
+        <ion-icon name="lock-closed-outline"></ion-icon>
+      </ion-item>
+      <ion-note  *ngIf="(password.dirty || password.touched) && password.errors" color="danger">Password invalido</ion-note>
+      
+      <div class="forgotpassword">
+        <a [routerLink]="['/resset-pass']">Olvidaste tu contraseña?</a>
+      </div>
+      
+      <ion-button class="ingresar" fill="outline" expand="block" (click)="login()">
+        <ion-icon name="arrow-forward-circle-outline" slot="end"></ion-icon>
+        Ingresar
+      </ion-button>
+      <div class="signupLink">
+        <p>¿Nuevo miembro? <a [routerLink]="['/signup']">Crea tu cuenta</a> </p>
+      </div>
+
+
+    </div>
+  </form>
+
+</ion-content>
+

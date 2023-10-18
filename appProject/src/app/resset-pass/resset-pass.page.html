@@ -1,0 +1,21 @@
+
+
+<ion-content class="content">
+  <div class="ion-padding asd">
+    <ion-text><h2 class="title">Ingresa tu email</h2></ion-text>
+    <p class="subTitle">Te enviaremos un link para recuperar tu contraseña.</p>
+    <ion-img src="assets/pointing-down.png"/>
+  </div>
+  <form [formGroup]="credentials" (ngSubmit)="ressetPass()">
+    <div class="ion-padding">
+      <ion-item>
+        <ion-input type="email" placeholder="Email" formControlName="email" class="input"></ion-input>
+        <ion-icon name="mail-outline"></ion-icon>
+      </ion-item>
+      <ion-button class="ingresar" fill="outline" expand="block" (click)="ressetPass()">
+        Enviar
+        <ion-icon slot="end" name="mail"></ion-icon>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

@@ -1,0 +1,48 @@
+.color{
+    background-color: var(--ion-color-fondo);
+}
+
+.title{
+    font-size: large;
+}
+
+.input{
+    font-size: 300;
+}
+
+ion-item{
+
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.header{
+    margin-top: 90px;
+    margin-bottom: 50px;
+    text-align: center;
+    .subTitle{
+        color: gray;
+        font-size: 0.9rem;
+    }
+    .title{
+        font-size: 2rem;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+}
+
+ion-img{
+    margin-top: 5%;
+    width: 30%;
+    align-items: center;
+    margin-left: 39%;
+}
+
+.signinLink{
+    color: gray;
+    font-size: 0.92rem;
+}
+
+.ingresar{
+    margin-top: 9%;
+    font-size: 1.1rem;
+}

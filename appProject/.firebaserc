@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "appifts": {
+      "hosting": {
+        "app": [
+          "appifts"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "appifts"
+  }
+}
