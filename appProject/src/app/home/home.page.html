@@ -1,14 +1,25 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-button (click)="logout()" fill="solid" shape="round" color="secondary">
-        <ion-icon slot="icon-only" name="log-out" ></ion-icon>
-        Log out
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-
+  <app-header [page]="'home'"></app-header>
+  <ion-infinite-scroll>
+      
+    <ion-card class="portada-container">
+      <img alt="Imagen portada" src="../../assets/images/fondo-3.jpg"/>
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Obten texto de una imagen!</ion-card-title>
+        <ion-card-subtitle class="ion-text-center">Con nuestra app es posible</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content class="ion-text-center">
+        Ya sea usando la camara de tu dispositivo o desde tu galeria, con nuestra app podes sacar el texto directo de cualquier imagen que desees.
+      </ion-card-content>
+    </ion-card>
+    <ion-button type="button" expand="block" class="ion-margin portada-container" (click)="navigateEscaner()">¡ Empieza ya mismo !</ion-button>
+    <div class="portada-sub-titulo">
+      <h2>O mira algunos ejemplos</h2>
+      <span><ion-icon name="caret-down-outline"></ion-icon></span>
+    </div>
+  
+    <div class="portada-container ejemplos-container">
+      
+    </div>
+  </ion-infinite-scroll>
 </ion-content>
