@@ -25,3 +25,25 @@
 #container a {
   text-decoration: none;
 }
+
+.portada-container{
+  margin: auto;
+  width: 90%;
+  height: auto;   
+  margin-top: 80px;
+  max-width: 700px;
+}
+
+.ejemplos-container{
+  height: 700px;
+}
+
+.portada-sub-titulo{
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  text-align: center;
+}

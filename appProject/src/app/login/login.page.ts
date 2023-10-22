@@ -18,7 +18,7 @@ export class LoginPage implements OnInit {
     private alertController: AlertController,
     private authService: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
   //Funcion para acceder a campo email
   get email() {

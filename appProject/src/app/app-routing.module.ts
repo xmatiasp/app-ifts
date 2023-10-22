@@ -7,7 +7,8 @@ import {
 } from '@angular/fire/auth-guard';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['']);
-const redirectLoggedInToHome = () => redirectLoggedInTo(['home ']);
+const redirectLoggedInToHome = () => redirectLoggedInTo(['home']);
+const redirectLoggedInToEscaner = () => redirectLoggedInTo(['escaner']);
 
 const routes: Routes = [
   {
@@ -19,6 +20,12 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
   ...canActivate(redirectUnauthorizedToLogin)
+  },
+
+  {
+    path: 'escaner',
+    loadChildren: () => import('./escaner/escaner.module').then( m => m.EscanerPageModule),
+
   },
   {
     path: 'signup',
@@ -34,6 +41,7 @@ const routes: Routes = [
     redirectTo: '',
     pathMatch: 'full'
   }
+
 ];
 
 @NgModule({

@@ -49,4 +49,9 @@ export class AuthService {
       return null;
     }
   }
+
+  getUsuario(){
+    console.log(this.auth);
+    return this.auth.currentUser;
+  }
 }

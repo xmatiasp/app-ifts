@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -9,17 +9,22 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  usuario: string = "";
 
   constructor(
     private loadingController: LoadingController,
     private alertController: AlertController,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private navCtrl: NavController
   ) {}
 
-  async logout(){
-    await this.authService.logout();
-    this.router.navigateByUrl('/', {replaceUrl: true})
+  ngOnInit(){
+
+  }
+
+  navigateEscaner(){
+    this.navCtrl.navigateRoot('escaner');
   }
 
 }

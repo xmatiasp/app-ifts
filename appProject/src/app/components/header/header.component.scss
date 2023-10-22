@@ -1,0 +1,58 @@
+ion-menu::part(backdrop) {
+    background-color: rgba(0, 187, 255, 0.5);
+  }
+  
+  ion-menu::part(container) {
+    border-radius: 0 20px 20px 0;
+  
+    box-shadow: 4px 0px 16px rgba(0, 187, 255, 0.5);
+  }
+
+.user-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.imagen-user{
+  background-color: white;
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+  background-image: url("../../../assets/images/profile-pic.png");
+  background-size: cover;
+  margin: 20px;
+}
+.btn-container{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.btn-logout{
+  width: 70%;
+  display: inline-flex;
+}
+
+ion-badge{
+  width: 30%;
+  height: 70%;
+  font-size: large;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+}
+
+ion-item{
+  height: 10vh;
+}
+
+.header-sticky{
+  height: 50px;
+}
+
+.menu-header{
+  z-index: 100;
+}
