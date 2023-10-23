@@ -1,0 +1,25 @@
+.card-container{
+    max-height: 600px;
+}
+.card-text{
+    height: 200px;
+    overflow-y: scroll;
+}
+.card-text p{
+    font-size: 1.2rem;
+}
+.card-container img{
+    max-height: 200px;
+    width: 100%;
+}
+
+.flex-center h2,p{
+    text-align: center;
+}
+.flex-center h2{
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+.flex-center p{
+    font-size: 1.3rem;
+}

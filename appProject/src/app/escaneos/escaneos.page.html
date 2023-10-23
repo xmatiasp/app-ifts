@@ -1,0 +1,32 @@
+<ion-header >
+  <ion-toolbar>
+    <ion-button fill="clear" size="small" (click)="navigate('home')">
+      <ion-icon name="arrow-undo-outline"></ion-icon>
+    </ion-button>
+    <ion-title>Mis escaneos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-infinite-scroll>
+    <div class="flex-center ion-margin" *ngIf="escaneos.length>0">
+      <ion-card class="card-container" *ngFor="let escan of escaneos">
+        <img alt="Escaneo" src={{escan.imagen}} />
+        <ion-card-header>
+          <ion-card-title>Resultado</ion-card-title>
+          <ion-card-subtitle>Fecha....</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content class="card-text">
+          <p>{{escan.texto}}</p>
+        </ion-card-content>
+        <ion-button (click)="showConfirm(escan)" class="ion-margin flex-center" color="danger" fill="outline" size="default">Eliminar</ion-button>
+      </ion-card>
+    </div>
+    <div class="flex-center" *ngIf="escaneos.length === 0">
+      <ion-icon name="sad-outline" size="large"></ion-icon>
+      <h2>Aún no hay imagenes escaneadas en tu perfil</h2>
+      <p>Comenzá a escanear imagenes y guardalas para que se muestren aca</p>
+    </div>
+  </ion-infinite-scroll>
+</ion-content>

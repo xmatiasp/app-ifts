@@ -18,7 +18,11 @@ export class OcrService {
     formData.append('language', 'spa');
     formData.append('OCREngine', '2');
     formData.append('base64Image', imageBase64);
-
-    return this.http.post('https://api.ocr.space/parse/image', formData, { headers });
+    const textoEscaneado = this.http.post('https://api.ocr.space/parse/image', formData, { headers });
+    if(textoEscaneado){
+      return textoEscaneado;
+    }else{
+      return null;
+    }
   }
 }

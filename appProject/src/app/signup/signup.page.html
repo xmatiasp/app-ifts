@@ -9,7 +9,7 @@
   <form [formGroup]="credentials" (ngSubmit)="register()">
     <div class="ion-padding">
       <ion-item>
-        <ion-input placeholder="Nombre" class="input"></ion-input>
+        <ion-input placeholder="Nombre" formControlName="name" class="input"></ion-input>
         <ion-icon name="person-outline"></ion-icon>
       </ion-item>
 

@@ -3,18 +3,15 @@
   <ion-infinite-scroll>
     <div class="flex-center ion-margin">
         <img class="imagen-container ion-margin" src="{{urlImagen}}">
-        <input style="display: none;" type="file" accept="image/*" (change)="uploadImage($event)" name="file" id="imagen-scan">
-        <ion-button class="ion-margin">
+        <ion-button class="ion-margin" (click)="takeImage()">
           <ion-icon slot="start" name="camera"></ion-icon>
-          Usar la camara</ion-button>
-        <ion-button class="ion-margin">
-          <ion-icon slot="start" name="image"></ion-icon>
-          <label for="imagen-scan">Elegir desde la galeria</label>
+          Seleccionar una imagen
         </ion-button>
-        <div>{{nombreArchivo}}</div>
+        <ion-text *ngIf="!seleccionado" color="danger">Sin seleccionar</ion-text>
+        <ion-text *ngIf="seleccionado" color="success">Imagen obtenida con exito!</ion-text>
     </div>
-    <div class="flex-center ion-margin-bottom" *ngIf="nombreArchivo !== 'Sin seleccionar'">
-      <ion-button class="ion-margin" class="ion-margin-bottom" color="success" (click)="processImage()">Procesar Imagen</ion-button>
+    <div class="flex-center ion-margin-bottom" *ngIf="seleccionado">
+      <ion-button class="ion-margin" class="ion-margin-bottom" color="success" (click)="processImage()">Escanear Imagen <ion-icon name="checkmark-circle-outline"></ion-icon></ion-button>
       <ion-card *ngIf="scannedText">
         <ion-card-header>
           Resultado
@@ -23,6 +20,7 @@
           {{ scannedText }}
         </ion-card-content>
       </ion-card>
+      <ion-button *ngIf="!guardado" (click)="guardarImagen()" class="ion-margin center" color="warning">Guardar</ion-button>
     </div>
   </ion-infinite-scroll>
 </ion-content>

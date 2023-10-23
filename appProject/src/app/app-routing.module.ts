@@ -25,7 +25,7 @@ const routes: Routes = [
   {
     path: 'escaner',
     loadChildren: () => import('./escaner/escaner.module').then( m => m.EscanerPageModule),
-
+    ...canActivate(redirectUnauthorizedToLogin)
   },
   {
     path: 'signup',
@@ -37,11 +37,20 @@ const routes: Routes = [
     loadChildren: () => import('./resset-pass/resset-pass.module').then( m => m.RessetPassPageModule)
   },
   {
+    path: 'perfil',
+    loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule),
+    ...canActivate(redirectUnauthorizedToLogin)
+  },
+  {
+    path: 'escaneos',
+    loadChildren: () => import('./escaneos/escaneos.module').then( m => m.EscaneosPageModule),
+    ...canActivate(redirectUnauthorizedToLogin)
+  },
+  {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'home',
     pathMatch: 'full'
   }
-
 ];
 
 @NgModule({
