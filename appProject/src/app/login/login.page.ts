@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
+import { LocalStorageService } from '../services/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginPage implements OnInit {
     private loadingController: LoadingController,
     private alertController: AlertController,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private localStorageService: LocalStorageService
   ) {}
 
   //Funcion para acceder a campo email
@@ -43,8 +45,10 @@ export class LoginPage implements OnInit {
     await loading.present();
 
     const user = await this.authService.login(this.credentials.value);
+    this.getUserInfo(user.user.uid);
     await loading.dismiss();
 
+    console.log(this.credentials.value);
     if(user) {
       this.router.navigateByUrl('/home', {replaceUrl: true});
     } else {
@@ -61,4 +65,18 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
 
+  async getUserInfo(uid: string){
+    if (this.credentials.valid) {
+      const loading = await this.loadingController.create();
+      await loading.present();
+
+      let path =`users/${uid}`;
+
+      this.authService.getDocument(path).then(user =>{
+        this.localStorageService.saveInLocalStorage('user', user);
+      });
+
+      await loading.dismiss();
+    }
+  }
 }

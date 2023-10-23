@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlertController, LoadingController, NavController } from '@ionic/angular';
-import { AuthService } from '../services/auth.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -12,10 +10,6 @@ export class HomePage {
   usuario: string = "";
 
   constructor(
-    private loadingController: LoadingController,
-    private alertController: AlertController,
-    private authService: AuthService,
-    private router: Router,
     private navCtrl: NavController
   ) {}
 

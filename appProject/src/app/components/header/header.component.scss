@@ -49,10 +49,11 @@ ion-item{
   height: 10vh;
 }
 
-.header-sticky{
-  height: 50px;
-}
-
 .menu-header{
   z-index: 100;
+}
+
+.sticky-header{
+  position: sticky;
+  top: 0;
 }

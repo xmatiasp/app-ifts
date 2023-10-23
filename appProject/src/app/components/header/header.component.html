@@ -8,7 +8,7 @@
   <ion-content class="ion-padding">
     <div class="user-container">
       <div class="imagen-user"></div>
-      <ion-text class="ion-margin">{{userEmail}}</ion-text>
+      <ion-text class="ion-margin">{{ username }}</ion-text>
     </div>
     <ion-list>
       <ion-item [button]="true" (click)="navigateTo('home')">
@@ -19,22 +19,28 @@
         <ion-icon aria-hidden="true" name="camera" slot="start"></ion-icon>
         <ion-label>Escanear imagen</ion-label>
       </ion-item>
-      <ion-item [button]="true">
+      <ion-item [button]="true" (click)="navigate('perfil')">
         <ion-icon aria-hidden="true" name="person" slot="start"></ion-icon>
         <ion-label>Perfil</ion-label>
       </ion-item>
-      <ion-item [button]="true">
+      <ion-item [button]="true" (click)="navigate('escaneos')">
         <ion-badge slot="end">15</ion-badge>
         <ion-icon aria-hidden="true" name="images" slot="start"></ion-icon>
         <ion-label>Mis textos</ion-label>
       </ion-item>
     </ion-list>
     <div class="btn-container">
-      <ion-button class="btn-logout" strong="true" color="danger" (click)="logout()">Cerrar sesion</ion-button>
+      <ion-button
+        class="btn-logout"
+        strong="true"
+        color="danger"
+        (click)="logout()"
+        >Cerrar sesion</ion-button
+      >
     </div>
   </ion-content>
 </ion-menu>
-<div class="ion-page" id="main-content" >
+<div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
