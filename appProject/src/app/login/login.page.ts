@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { LocalStorageService } from '../services/local-storage.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 })
 export class LoginPage implements OnInit {
   credentials: FormGroup;
+  respuesta:any;
 
   constructor(
     private fb: FormBuilder,
@@ -43,16 +45,23 @@ export class LoginPage implements OnInit {
   async login(){
     const loading = await this.loadingController.create();
     await loading.present();
-
-    const user = await this.authService.login(this.credentials.value);
-    await this.getUserInfo(user.user.uid);
-    
-    if(user) {
-      this.router.navigateByUrl('/home', {replaceUrl: true});
-    } else {
-      this.showAlert('Login fallido', 'Intenta de nuevo maquina');
+    try{
+      await this.authService.login(this.credentials.value).then(
+        res=>{
+          this.respuesta = res;
+        }
+      ).catch(e=>{
+        throw new Error("Intenta de nuevo maquina");
+      }
+      );
+      await this.getUserInfo(this.respuesta.user.uid);
+      this.router.navigate(['home']);
+    }
+    catch (error){
+      this.showAlert('Login fallido', error.message);
     }
     await loading.dismiss();
+    
   } 
 
   async showAlert(header, message) {
@@ -65,17 +74,22 @@ export class LoginPage implements OnInit {
   }
 
   async getUserInfo(uid: string){
-    if (this.credentials.valid) {
-      const loading = await this.loadingController.create();
-      await loading.present();
-
-      let path =`users/${uid}`;
-
-      this.authService.getDocument(path).then(user => {
-        this.localStorageService.saveInLocalStorage('user', user);
-      });
-
-      await loading.dismiss();
+    try{
+      if (this.credentials.valid) {
+        const loading = await this.loadingController.create();
+        await loading.present();
+  
+        let path =`users/${uid}`;
+  
+        await this.authService.getDocument(path).then(user => {
+          this.localStorageService.saveInLocalStorage('user', user);
+        });
+  
+        await loading.dismiss();
+      }
+    }
+    catch (error){
+      throw new Error("Intenta de nuevo maquina");
     }
   }
 }

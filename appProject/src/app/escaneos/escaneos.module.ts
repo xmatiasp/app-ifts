@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { EscaneosPageRoutingModule } from './escaneos-routing.module';
 
 import { EscaneosPage } from './escaneos.page';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    EscaneosPageRoutingModule
+    EscaneosPageRoutingModule,
+    ComponentsModule
   ],
   declarations: [EscaneosPage]
 })

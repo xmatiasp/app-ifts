@@ -1,5 +1,9 @@
 .card-container{
     max-height: 600px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 500px;
 }
 .card-text{
     height: 200px;

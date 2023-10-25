@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController, MenuController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, MenuController, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 
@@ -12,44 +12,59 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 export class HeaderComponent  implements OnInit {
   @Input() page: string = "";
   public cantidadTextos: number= 0;
-  public username: string;
+  public user: any;
+  public username: string="";
   public progress = 0;
   constructor(private router: Router, 
     private authService: AuthService, 
     private navCtrl: NavController, 
     private menu: MenuController,
     private localStorageService: LocalStorageService,
-    private loadingController: LoadingController
-    ) { }
+    private loadingController: LoadingController,
+    private alertController: AlertController
+    ) {}
 
-  async ngOnInit() {
-    setTimeout(
-      ()=>{
-        this.asignarUsername();
-        this.getEscaneos();
-      }, 1000
-    );
+  ngOnInit() {
+    this.getUser();
   }
-
+  //============== Boton cerrar sesion ==============
   async logout(){
     await this.authService.logout();
     this.localStorageService.removeFromLocalStorage('user');
     this.menu.close('main-menu');
     this.router.navigateByUrl('/', {replaceUrl: true})
   }
-
-  user(){
-    return this.localStorageService.getFromLocalStorage('user');
+  //============== Funcion para obtener datos del localStorage ==============
+  async getUser(){
+    try{
+      this.user = await this.localStorageService.getFromLocalStorage('user');
+      if(this.user){
+        this.getEscaneos();
+        this.asignarUsername();
+      }
+      else{
+        throw new Error();
+      }
+    }
+    catch(error){
+      this.showAlert("Usuario no logeado","Por favor vuelva a iniciar sesion");
+    }
+    
   }
-
+  //============== Funcion para obtener cantidad de escaneos del user ==============
   async getEscaneos(){
-    let path = `users/${this.user().uid}/escaneos`;
-    let sub = this.authService.getCollectionData(path).subscribe({
+    try{
+      let path = `users/${this.user.uid}/escaneos`;
+      this.authService.getCollectionData(path).subscribe({
       next: (res: any)=>{
         this.cantidadTextos = res.length;
-        sub.unsubscribe();
       }
     });
+    }
+    catch (error){
+      throw new Error(error.message);
+    }
+    
   }
 
   /* ========== Funcion para navegar a pagina con mismo header ========== */
@@ -61,12 +76,6 @@ export class HeaderComponent  implements OnInit {
     else{
       this.menu.close('main-menu');
     }
-  }
-  /* ========== Funcion para navegar a pagina sin header ========== */
-  async navigate(destino){
-    await this.cargando();
-    this.menu.close('main-menu');
-    this.router.navigate([destino]);
   }
   /* ========== Funcion para simular una carga de pagina ========== */
   async cargando() {
@@ -93,7 +102,19 @@ export class HeaderComponent  implements OnInit {
 
   /* ========== Funcion para setear el username ========== */
   async asignarUsername(){
-    let name = await this.user().name;
-    await name?this.username = name:this.username = this.user().email;
+    this.username = this.user.name;
+  }
+
+  async showAlert(header, message) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: [{
+        text: 'OK',
+        cssClass: 'danger',
+        handler: () => this.logout()
+    }],
+    });
+    await alert.present();
   }
 }

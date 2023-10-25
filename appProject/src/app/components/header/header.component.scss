@@ -1,11 +1,11 @@
 ion-menu::part(backdrop) {
-    background-color: rgba(0, 187, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.473);
   }
   
   ion-menu::part(container) {
     border-radius: 0 20px 20px 0;
   
-    box-shadow: 4px 0px 16px rgba(0, 187, 255, 0.5);
+    box-shadow: 4px 0px 16px rgba(124, 1, 148, 0.5);
   }
 
 .user-container{
@@ -56,4 +56,12 @@ ion-item{
 .sticky-header{
   position: sticky;
   top: 0;
+}
+
+.header-border{
+  border-bottom-left-radius: 5%;
+  border-bottom-right-radius: 5%
+}
+.btn-border{
+  border-right: 1px solid white;
 }

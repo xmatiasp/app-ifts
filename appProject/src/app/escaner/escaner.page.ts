@@ -44,6 +44,8 @@ export class EscanerPage implements OnInit {
   }
   //============== Guardar datos de la imagen ==============
   async takeImage(){
+    this.urlImagen = "../../assets/images/icono-imagenes.png";
+    this.seleccionado = false;
     try{
       const dataUrl = ((await this.takePicture()).dataUrl);
       if(dataUrl){
