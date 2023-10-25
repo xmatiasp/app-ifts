@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuController, NavController } from '@ionic/angular';
+import { LoadingController, MenuController, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 
@@ -11,22 +11,45 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 })
 export class HeaderComponent  implements OnInit {
   @Input() page: string = "";
+  public cantidadTextos: number= 0;
   public username: string;
   public progress = 0;
   constructor(private router: Router, 
     private authService: AuthService, 
     private navCtrl: NavController, 
     private menu: MenuController,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private loadingController: LoadingController
     ) { }
 
-  ngOnInit() {
-    this.asignarUsername();
+  async ngOnInit() {
+    setTimeout(
+      ()=>{
+        this.asignarUsername();
+        this.getEscaneos();
+      }, 1000
+    );
   }
+
   async logout(){
     await this.authService.logout();
     this.localStorageService.removeFromLocalStorage('user');
+    this.menu.close('main-menu');
     this.router.navigateByUrl('/', {replaceUrl: true})
+  }
+
+  user(){
+    return this.localStorageService.getFromLocalStorage('user');
+  }
+
+  async getEscaneos(){
+    let path = `users/${this.user().uid}/escaneos`;
+    let sub = this.authService.getCollectionData(path).subscribe({
+      next: (res: any)=>{
+        this.cantidadTextos = res.length;
+        sub.unsubscribe();
+      }
+    });
   }
 
   /* ========== Funcion para navegar a pagina con mismo header ========== */
@@ -69,8 +92,8 @@ export class HeaderComponent  implements OnInit {
   }
 
   /* ========== Funcion para setear el username ========== */
-  asignarUsername(){
-    const name = this.authService.getUsuario().displayName;
-    name?this.username = name:this.username=this.authService.getUsuario().email;
+  async asignarUsername(){
+    let name = await this.user().name;
+    await name?this.username = name:this.username = this.user().email;
   }
 }

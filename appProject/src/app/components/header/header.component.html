@@ -2,12 +2,12 @@
   <ion-progress-bar [value]="progress" color="success"></ion-progress-bar>
   <ion-header>
     <ion-toolbar color="primary">
-      <ion-title>Menu</ion-title>
+      <ion-title class="ion-text-center">Menu</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
     <div class="user-container">
-      <div class="imagen-user"></div>
+      <img class="imagen-user" [src]="user()?.image"/>
       <ion-text class="ion-margin">{{ username }}</ion-text>
     </div>
     <ion-list>
@@ -24,7 +24,7 @@
         <ion-label>Perfil</ion-label>
       </ion-item>
       <ion-item [button]="true" (click)="navigate('escaneos')">
-        <ion-badge slot="end">15</ion-badge>
+        <ion-badge slot="end">{{cantidadTextos}}</ion-badge>
         <ion-icon aria-hidden="true" name="images" slot="start"></ion-icon>
         <ion-label>Mis textos</ion-label>
       </ion-item>

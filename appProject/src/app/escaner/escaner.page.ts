@@ -44,14 +44,18 @@ export class EscanerPage implements OnInit {
   }
   //============== Guardar datos de la imagen ==============
   async takeImage(){
-    const dataUrl = ((await this.takePicture()).dataUrl);
-    if(dataUrl){
-      this.urlImagen = dataUrl;
-      this.imageBase64 = dataUrl;
-      this.nombreArchivo = "Imagen obtenida!"
-      this.seleccionado = true;
+    try{
+      const dataUrl = ((await this.takePicture()).dataUrl);
+      if(dataUrl){
+        this.urlImagen = dataUrl;
+        this.imageBase64 = dataUrl;
+        this.nombreArchivo = "Imagen obtenida!"
+        this.seleccionado = true;
+      }
     }
-    
+    catch (error){
+      this.showAlert("Error","Ocurrio un error al tomar la foto");
+    }
   }
 
   //============== Procesar imagen ya obtenida ==============
@@ -62,14 +66,17 @@ export class EscanerPage implements OnInit {
 
     if (this.imageBase64) {
       try {
-        const data: any = await this.ocrService.performOCR(this.imageBase64).toPromise();
-        this.scannedText = data.ParsedResults[0].ParsedText;
+        await this.ocrService.performOCR(this.imageBase64).toPromise().then(
+          (res: any)=>{
+            this.scannedText = res.ParsedResults[0].ParsedText;
+          }
+        );
         if(this.scannedText==""){
           throw new Error("No se pudo obtener texto de esta imagen");
         }
         this.guardado = false;
       } catch (error) {
-        this.showAlert('Escaneo fallido: ', error.message+'. Por favor intene con otra.');
+        this.showAlert('Escaneo fallido: ', error.message +'. Por favor intene con otra.');
       }
     }
     await loading.dismiss();
@@ -102,7 +109,5 @@ export class EscanerPage implements OnInit {
     }
 
     await loading.dismiss();
-
-
   }
 }

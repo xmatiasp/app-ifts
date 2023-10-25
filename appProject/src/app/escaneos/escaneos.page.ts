@@ -25,8 +25,11 @@ export class EscaneosPage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewWillEnter(){
-    this.getEscaneos();
+  async ionViewWillEnter(){
+    const loading = await this.loadingController.create();
+    await loading.present();
+    await this.getEscaneos();
+    await loading.dismiss();
   }
 
   user(){
@@ -34,7 +37,7 @@ export class EscaneosPage implements OnInit {
   }
 
   navigate(destino){
-      this.router.navigate([destino]);
+    this.navCtrl.navigateRoot(destino);
   }
 
   async getEscaneos(){

@@ -45,15 +45,14 @@ export class LoginPage implements OnInit {
     await loading.present();
 
     const user = await this.authService.login(this.credentials.value);
-    this.getUserInfo(user.user.uid);
-    await loading.dismiss();
-
-    console.log(this.credentials.value);
+    await this.getUserInfo(user.user.uid);
+    
     if(user) {
       this.router.navigateByUrl('/home', {replaceUrl: true});
     } else {
       this.showAlert('Login fallido', 'Intenta de nuevo maquina');
     }
+    await loading.dismiss();
   } 
 
   async showAlert(header, message) {
@@ -72,7 +71,7 @@ export class LoginPage implements OnInit {
 
       let path =`users/${uid}`;
 
-      this.authService.getDocument(path).then(user =>{
+      this.authService.getDocument(path).then(user => {
         this.localStorageService.saveInLocalStorage('user', user);
       });
 
