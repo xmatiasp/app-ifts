@@ -15,20 +15,17 @@ ion-item{
     flex-direction: column;
     justify-content:space-between;
     text-align: center;
-    .subTitle{
-        margin-top: 10%;
-        color: gray;
-        font-size: 1rem;
+    .textoPrincipal{
+        margin-top: 8%;
     }
-    .title{
-        margin-bottom: 10%;
-        font-size: 2rem;
-        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;   
+    .subTitle{
+        color: gray;
+        font-size: 1.1rem;
     }
 }
 
 ion-img{
-    height: 90px;
+    height: 200px;
 }
 
 .ingresar{
