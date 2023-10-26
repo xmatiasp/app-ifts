@@ -31,7 +31,7 @@ export class PerfilPage implements OnInit {
     return this.localStorageService.getFromLocalStorage('user');
   }
 
-
+//============== Condicion para mostrar si la imagen se tomo con exito ==============
   async takePicture(){
     return await Camera.getPhoto({
       quality: 90,
@@ -43,7 +43,7 @@ export class PerfilPage implements OnInit {
       promptLabelPicture: 'Toma una foto'
     });
   }
-
+//============== Funcion para tomar y guardar la foto ==============
   async takeImage(){
 
     let user = this.user();

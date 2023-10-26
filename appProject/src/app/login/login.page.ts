@@ -41,7 +41,7 @@ export class LoginPage implements OnInit {
     });
   }
 
-
+  //============== Funcion para realizar el login ==============
   async login(){
     const loading = await this.loadingController.create();
     await loading.present();
@@ -51,19 +51,19 @@ export class LoginPage implements OnInit {
           this.respuesta = res;
         }
       ).catch(e=>{
-        throw new Error("Intenta de nuevo maquina");
+        throw new Error();
       }
       );
       await this.getUserInfo(this.respuesta.user.uid);
       this.router.navigate(['home']);
     }
     catch (error){
-      this.showAlert('Login fallido', error.message);
+      this.showAlert('Login fallido', "Intenta de nuevo maquina");
     }
     await loading.dismiss();
     
   } 
-
+//============== Funcion de alerta ==============
   async showAlert(header, message) {
     const alert = await this.alertController.create({
       header,
@@ -73,6 +73,7 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
 
+  //============== Funcion obtener y guardar usuario en el localstorage ==============
   async getUserInfo(uid: string){
     try{
       if (this.credentials.valid) {

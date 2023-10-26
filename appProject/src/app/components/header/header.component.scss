@@ -53,15 +53,13 @@ ion-item{
   z-index: 100;
 }
 
-.sticky-header{
-  position: sticky;
-  top: 0;
-}
-
-.header-border{
-  border-bottom-left-radius: 5%;
-  border-bottom-right-radius: 5%
-}
 .btn-border{
   border-right: 1px solid white;
+}
+.first-uppercase{
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.first-uppercase::first-letter{
+  text-transform: uppercase;
 }

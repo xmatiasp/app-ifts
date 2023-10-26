@@ -12,12 +12,19 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./escaner.page.scss'],
 })
 export class EscanerPage implements OnInit {
+  //============== Texto escaneado ==============
   public scannedText?: string;
+  //============== string que se enviara al servicio de OCR ==============
   public imageBase64: string="";
+  //Inicialmente era el nombre del archivo pero con el uso de camara no se podia obtener el nombre
+  //Se termino usando como una condicion para mostrar texto en rojo o el boton de procesar imagen
   public nombreArchivo: string="Sin seleccionar";
+  //============== url para mostrar imagen en html ==============
   public urlImagen?: string="../../assets/images/icono-imagenes.png";
+  //============== Condicion para mostrar si la imagen ya se selecciono ==============
   public seleccionado: boolean = false;
   public user;
+  //============== Condicion para saber si ya se guardo el escaneo ==============
   public guardado: boolean = true;
 
   constructor(public router: Router, private ocrService: OcrService,private loadingController: LoadingController,
@@ -48,12 +55,10 @@ export class EscanerPage implements OnInit {
     this.seleccionado = false;
     try{
       const dataUrl = ((await this.takePicture()).dataUrl);
-      if(dataUrl){
         this.urlImagen = dataUrl;
         this.imageBase64 = dataUrl;
         this.nombreArchivo = "Imagen obtenida!"
         this.seleccionado = true;
-      }
     }
     catch (error){
       this.showAlert("Error","Ocurrio un error al tomar la foto");
@@ -72,7 +77,9 @@ export class EscanerPage implements OnInit {
           (res: any)=>{
             this.scannedText = res.ParsedResults[0].ParsedText;
           }
-        );
+        ).catch(error=>{
+          throw new Error("El archivo supera el tamaño maximo permitido (1024KB)");
+        });
         if(this.scannedText==""){
           throw new Error("No se pudo obtener texto de esta imagen");
         }
@@ -102,7 +109,7 @@ export class EscanerPage implements OnInit {
     let imagePath = `${this.user.uid}/${Date.now()}`;
     let imageUrl = await this.authService.uploadImage(imagePath, this.urlImagen);
     try{
-      this.authService.addDocument(path, {imagen: imageUrl, texto: this.scannedText});
+      this.authService.addDocument(path, {imagen: imageUrl, texto: this.scannedText, fecha: new Date().toLocaleString()});
       this.showAlert('Todo salio bien', 'Se guardaron los datos con exito!');
       this.guardado = true;
     }

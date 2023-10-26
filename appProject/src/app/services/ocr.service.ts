@@ -9,6 +9,7 @@ export class OcrService {
 
   constructor(private http: HttpClient) { }
 
+  //============== Funcion que arma el body de la request y la envia con un POST ==============
   performOCR(imageBase64: string) {
     const headers = new HttpHeaders({
       'apiKey': this.apiKey
@@ -18,6 +19,7 @@ export class OcrService {
     formData.append('language', 'spa');
     formData.append('OCREngine', '2');
     formData.append('base64Image', imageBase64);
+    
     const textoEscaneado = this.http.post('https://api.ocr.space/parse/image', formData, { headers });
     if(textoEscaneado){
       return textoEscaneado;

@@ -11,6 +11,8 @@ import { AlertController, LoadingController, NavController } from '@ionic/angula
   styleUrls: ['./escaneos.page.scss'],
 })
 export class EscaneosPage implements OnInit {
+
+  //============== Array de escaneos ==============
   escaneos: Escaneo[] = [];
 
   constructor(
@@ -25,6 +27,7 @@ export class EscaneosPage implements OnInit {
   ngOnInit() {
   }
 
+  //============== Funcion ngOnInit pero de ionic ==============
   async ionViewWillEnter(){
     const loading = await this.loadingController.create();
     await loading.present();
@@ -40,6 +43,7 @@ export class EscaneosPage implements OnInit {
     this.navCtrl.navigateRoot(destino);
   }
 
+  //============== Funcion para obtener array de los escaneos ==============
   async getEscaneos(){
     let path = `users/${this.user().uid}/escaneos`;
     const loading = await this.loadingController.create();
@@ -53,7 +57,7 @@ export class EscaneosPage implements OnInit {
     });
     await loading.dismiss();
   }
-
+  //============== Funcion eliminar del storage ==============
   async deleteEscaneo(escaneo: Escaneo){
     let path = `users/${this.user().uid}/escaneos/${escaneo.id}`;
     const loading = await this.loadingController.create();
