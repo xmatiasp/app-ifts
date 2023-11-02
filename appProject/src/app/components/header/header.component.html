@@ -1,14 +1,14 @@
 <ion-menu contentId="main-content" class="menu-header" menuId="main-menu">
   <ion-progress-bar [value]="progress" color="success"></ion-progress-bar>
   <ion-header>
-    <ion-toolbar color="primary">
-      <ion-title>Menu</ion-title>
+    <ion-toolbar color="tertiary">
+      <ion-title class="header-tittle">Menu</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
     <div class="user-container">
-      <div class="imagen-user"></div>
-      <ion-text class="ion-margin">{{ username }}</ion-text>
+      <img class="imagen-user" [src]="user?.image"/>
+      <ion-text class="ion-margin first-uppercase">{{ username }}</ion-text>
     </div>
     <ion-list>
       <ion-item [button]="true" (click)="navigateTo('home')">
@@ -19,12 +19,12 @@
         <ion-icon aria-hidden="true" name="camera" slot="start"></ion-icon>
         <ion-label>Escanear imagen</ion-label>
       </ion-item>
-      <ion-item [button]="true" (click)="navigate('perfil')">
+      <ion-item [button]="true" (click)="navigateTo('perfil')">
         <ion-icon aria-hidden="true" name="person" slot="start"></ion-icon>
         <ion-label>Perfil</ion-label>
       </ion-item>
-      <ion-item [button]="true" (click)="navigate('escaneos')">
-        <ion-badge slot="end">15</ion-badge>
+      <ion-item [button]="true" (click)="navigateTo('escaneos')">
+        <ion-badge color="tertiary" slot="end">{{cantidadTextos}}</ion-badge>
         <ion-icon aria-hidden="true" name="images" slot="start"></ion-icon>
         <ion-label>Mis textos</ion-label>
       </ion-item>
@@ -40,13 +40,13 @@
     </div>
   </ion-content>
 </ion-menu>
-<div class="ion-page" id="main-content">
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
+<div id="main-content">
+  <ion-header >
+    <ion-toolbar color="primary" class="header-border">
+      <ion-buttons slot="start" >
+        <ion-menu-button class="btn-border"></ion-menu-button>
       </ion-buttons>
-      <ion-title>Menu</ion-title>
+      <ion-title>ScanText</ion-title>
     </ion-toolbar>
   </ion-header>
 </div>

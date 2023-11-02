@@ -25,14 +25,14 @@ export class RessetPassPage implements OnInit {
       email: ['', [Validators.required, Validators.email]]
     });
   }
-
+//============== Funcion para enviar reset de password ==============
   async ressetPass(){
     await this.authService.ressetpassword(this.credentials.value)
     .then(()=>{
       this.showAlert('Mail enviado', 'Revisa tu correo para cambiar tu contraseña')
     })
   }
-
+//============== Alerta ==============
     async showAlert(header, message) {
       const alert = await this.alertController.create({
         header,
