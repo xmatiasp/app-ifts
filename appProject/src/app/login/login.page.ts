@@ -58,7 +58,7 @@ export class LoginPage implements OnInit {
       this.router.navigate(['home']);
     }
     catch (error){
-      this.showAlert('Login fallido', "Intenta de nuevo maquina");
+      this.showAlert('Login fallido', "Intenta de nuevo, máquina");
     }
     await loading.dismiss();
     
@@ -90,7 +90,7 @@ export class LoginPage implements OnInit {
       }
     }
     catch (error){
-      throw new Error("Intenta de nuevo maquina");
+      throw new Error("Intenta de nuevo, máquina");
     }
   }
 }

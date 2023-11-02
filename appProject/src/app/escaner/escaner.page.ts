@@ -78,14 +78,14 @@ export class EscanerPage implements OnInit {
             this.scannedText = res.ParsedResults[0].ParsedText;
           }
         ).catch(error=>{
-          throw new Error("El archivo supera el tamaño maximo permitido (1024KB)");
+          throw new Error("El archivo supera el tamaño máximo permitido (1024KB)");
         });
         if(this.scannedText==""){
           throw new Error("No se pudo obtener texto de esta imagen");
         }
         this.guardado = false;
       } catch (error) {
-        this.showAlert('Escaneo fallido: ', error.message +'. Por favor intene con otra.');
+        this.showAlert('Escaneo fallido: ', error.message +'. Por favor, intene con otra.');
       }
     }
     await loading.dismiss();
@@ -110,11 +110,11 @@ export class EscanerPage implements OnInit {
     let imageUrl = await this.authService.uploadImage(imagePath, this.urlImagen);
     try{
       this.authService.addDocument(path, {imagen: imageUrl, texto: this.scannedText, fecha: new Date().toLocaleString()});
-      this.showAlert('Todo salio bien', 'Se guardaron los datos con exito!');
+      this.showAlert('Todo salió bien', 'Se guardó el escaneo con éxito!');
       this.guardado = true;
     }
     catch (error){
-      this.showAlert('Guardado fallido: ', error.message+'. Por favor intene otra vez mas tarde.');
+      this.showAlert('Guardado fallido: ', error.message+'. Por favor, intene otra vez más tarde.');
     }
 
     await loading.dismiss();

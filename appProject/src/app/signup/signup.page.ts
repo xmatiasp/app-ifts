@@ -58,7 +58,7 @@ export class SignupPage implements OnInit {
     if(user) {
       this.router.navigateByUrl('/home', {replaceUrl: true});
     } else {
-      this.showAlert('Registro fallido', 'Intenta de nuevo maquina');
+      this.showAlert('Registro fallido', 'Intenta de nuevo, máquina');
     }
   }
 //============== Alerta ==============

@@ -68,11 +68,11 @@ export class EscaneosPage implements OnInit {
       this.authService.deleteDocument(path).then(async res=>{
 
         this.escaneos = this.escaneos.filter( p=> p.id != escaneo.id);
-        this.showAlert('Eliminado!', 'Se elimino con exito.');
+        this.showAlert('Eliminado!', 'Se eliminó con éxito.');
       });
     }
     catch (error){
-      this.showAlert('Ocurrio un error: ', error.message);
+      this.showAlert('Ocurrió un error: ', error.message);
     }
 
     await loading.dismiss();
@@ -90,7 +90,7 @@ export class EscaneosPage implements OnInit {
   async showConfirm(escaneo: Escaneo) {
     const alert = await this.alertController.create({
       header: 'Confirmar',
-      message: '¿Seguro que desea eliminar esta card?',
+      message: '¿Seguro que desea eliminar este escaneo?',
       buttons: [{
         text: 'Cancelar',
         role: 'cancel',
