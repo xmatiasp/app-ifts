@@ -17,7 +17,13 @@
           Resultado
         </ion-card-header>
         <ion-card-content>
-          {{ scannedText }}
+          {{ scannedText }}       
+        </ion-card-content>
+        <ion-card-header>
+          Texto traducido:
+        </ion-card-header>
+        <ion-card-content>
+          {{ mensajeTraducido }}
         </ion-card-content>
       </ion-card>
       <ion-button *ngIf="!guardado" (click)="guardarImagen()" class="ion-margin center" color="warning">Guardar</ion-button>

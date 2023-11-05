@@ -5,6 +5,7 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { LocalStorageService } from '../services/local-storage.service';
 import { AuthService } from '../services/auth.service';
+import { TraductorService } from '../traductor.service';
 
 @Component({
   selector: 'app-escaner',
@@ -12,7 +13,9 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./escaner.page.scss'],
 })
 export class EscanerPage implements OnInit {
-  public scannedText?: string;
+  public scannedText?: string; //             este es la variable a usar
+  public textoTraducido?: any; //             agregado**
+  public mensajeTraducido:string//             agregado**
   public imageBase64: string="";
   public nombreArchivo: string="Sin seleccionar";
   public urlImagen?: string="../../assets/images/icono-imagenes.png";
@@ -23,7 +26,8 @@ export class EscanerPage implements OnInit {
   constructor(public router: Router, private ocrService: OcrService,private loadingController: LoadingController,
     private alertController: AlertController,
     private localStorageService: LocalStorageService,
-    private authService: AuthService
+    private authService: AuthService,
+    public traductor: TraductorService //             agregado**
     ) { }
 
   ngOnInit() {
@@ -64,6 +68,14 @@ export class EscanerPage implements OnInit {
       try {
         const data: any = await this.ocrService.performOCR(this.imageBase64).toPromise();
         this.scannedText = data.ParsedResults[0].ParsedText;
+
+        //============== Llama a la Api del traductor ==============
+        this.traductor.traducir(this.scannedText).subscribe(data => {
+          var textoTraducido = data.text[0]
+          this.mensajeTraducido = textoTraducido;
+
+          console.log('solamente el texto a continuacion ::: '+textoTraducido); 
+        });//finaliza Api traductor
         if(this.scannedText==""){
           throw new Error("No se pudo obtener texto de esta imagen");
         }
