@@ -41,7 +41,7 @@ export class SignupPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
-
+//============== Funcion para realizar el registro ==============
   async register(){
     const loading = await this.loadingController.create();
     await loading.present();
@@ -58,10 +58,10 @@ export class SignupPage implements OnInit {
     if(user) {
       this.router.navigateByUrl('/home', {replaceUrl: true});
     } else {
-      this.showAlert('Registro fallido', 'Intenta de nuevo maquina');
+      this.showAlert('Registro fallido', 'Intenta de nuevo, máquina');
     }
   }
-
+//============== Alerta ==============
   async showAlert(header, message) {
     const alert = await this.alertController.create({
       header,
@@ -70,7 +70,7 @@ export class SignupPage implements OnInit {
     });
     await alert.present();
   }
-  
+  //============== Guardar en la base de datos el nuevo usuario y guardarlo en localStorage ==============
   async setUserInfo(uid: string){
     if (this.credentials.valid) {
       const loading = await this.loadingController.create();

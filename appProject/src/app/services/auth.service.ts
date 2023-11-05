@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { signOut } from '@angular/fire/auth';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile } from '@angular/fire/auth';
 import { Firestore } from '@angular/fire/firestore';
-import { getFirestore, setDoc, doc, getDoc, addDoc, collection, collectionData, query, deleteDoc } from '@angular/fire/firestore';
+import { getFirestore, setDoc, doc, getDoc, addDoc, collection, collectionData, query, deleteDoc, updateDoc } from '@angular/fire/firestore';
 import { Storage } from '@angular/fire/storage';
 import { getStorage, uploadString, ref, getDownloadURL, deleteObject } from 'firebase/storage';
 
@@ -75,6 +75,9 @@ export class AuthService {
   }
   async getDocument(path: string){
     return (await getDoc(doc(getFirestore(), path))).data();
+  }
+  updateDocument(path: string, data: any){
+    return updateDoc(doc(getFirestore(), path), data);
   }
   addDocument(path: string, data: any){
     return addDoc(collection(getFirestore(), path), data);

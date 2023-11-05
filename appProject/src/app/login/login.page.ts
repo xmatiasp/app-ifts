@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { LocalStorageService } from '../services/local-storage.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 })
 export class LoginPage implements OnInit {
   credentials: FormGroup;
+  respuesta:any;
 
   constructor(
     private fb: FormBuilder,
@@ -39,23 +41,29 @@ export class LoginPage implements OnInit {
     });
   }
 
-
+  //============== Funcion para realizar el login ==============
   async login(){
     const loading = await this.loadingController.create();
     await loading.present();
-
-    const user = await this.authService.login(this.credentials.value);
-    this.getUserInfo(user.user.uid);
-    await loading.dismiss();
-
-    console.log(this.credentials.value);
-    if(user) {
-      this.router.navigateByUrl('/home', {replaceUrl: true});
-    } else {
-      this.showAlert('Login fallido', 'Intenta de nuevo maquina');
+    try{
+      await this.authService.login(this.credentials.value).then(
+        res=>{
+          this.respuesta = res;
+        }
+      ).catch(e=>{
+        throw new Error();
+      }
+      );
+      await this.getUserInfo(this.respuesta.user.uid);
+      this.router.navigate(['home']);
     }
+    catch (error){
+      this.showAlert('Login fallido', "Intenta de nuevo, máquina");
+    }
+    await loading.dismiss();
+    
   } 
-
+//============== Funcion de alerta ==============
   async showAlert(header, message) {
     const alert = await this.alertController.create({
       header,
@@ -65,18 +73,24 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
 
+  //============== Funcion obtener y guardar usuario en el localstorage ==============
   async getUserInfo(uid: string){
-    if (this.credentials.valid) {
-      const loading = await this.loadingController.create();
-      await loading.present();
-
-      let path =`users/${uid}`;
-
-      this.authService.getDocument(path).then(user =>{
-        this.localStorageService.saveInLocalStorage('user', user);
-      });
-
-      await loading.dismiss();
+    try{
+      if (this.credentials.valid) {
+        const loading = await this.loadingController.create();
+        await loading.present();
+  
+        let path =`users/${uid}`;
+  
+        await this.authService.getDocument(path).then(user => {
+          this.localStorageService.saveInLocalStorage('user', user);
+        });
+  
+        await loading.dismiss();
+      }
+    }
+    catch (error){
+      throw new Error("Intenta de nuevo, máquina");
     }
   }
 }

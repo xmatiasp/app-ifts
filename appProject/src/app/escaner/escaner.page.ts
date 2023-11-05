@@ -13,21 +13,28 @@ import { TraductorService } from '../traductor.service';
   styleUrls: ['./escaner.page.scss'],
 })
 export class EscanerPage implements OnInit {
-  public scannedText?: string; //             este es la variable a usar
-  public textoTraducido?: any; //             agregado**
-  public mensajeTraducido:string//             agregado**
+  //============== Texto escaneado ==============
+  public scannedText?: string; //             
+  public textoTraducido?: any; //             traductor
+  public mensajeTraducido:string//             traductor
+  //============== string que se enviara al servicio de OCR ==============
   public imageBase64: string="";
+  //Inicialmente era el nombre del archivo pero con el uso de camara no se podia obtener el nombre
+  //Se termino usando como una condicion para mostrar texto en rojo o el boton de procesar imagen
   public nombreArchivo: string="Sin seleccionar";
+  //============== url para mostrar imagen en html ==============
   public urlImagen?: string="../../assets/images/icono-imagenes.png";
+  //============== Condicion para mostrar si la imagen ya se selecciono ==============
   public seleccionado: boolean = false;
   public user;
+  //============== Condicion para saber si ya se guardo el escaneo ==============
   public guardado: boolean = true;
 
   constructor(public router: Router, private ocrService: OcrService,private loadingController: LoadingController,
     private alertController: AlertController,
     private localStorageService: LocalStorageService,
     private authService: AuthService,
-    public traductor: TraductorService //             agregado**
+    public traductor: TraductorService
     ) { }
 
   ngOnInit() {
@@ -48,14 +55,18 @@ export class EscanerPage implements OnInit {
   }
   //============== Guardar datos de la imagen ==============
   async takeImage(){
-    const dataUrl = ((await this.takePicture()).dataUrl);
-    if(dataUrl){
-      this.urlImagen = dataUrl;
-      this.imageBase64 = dataUrl;
-      this.nombreArchivo = "Imagen obtenida!"
-      this.seleccionado = true;
+    this.urlImagen = "../../assets/images/icono-imagenes.png";
+    this.seleccionado = false;
+    try{
+      const dataUrl = ((await this.takePicture()).dataUrl);
+        this.urlImagen = dataUrl;
+        this.imageBase64 = dataUrl;
+        this.nombreArchivo = "Imagen obtenida!"
+        this.seleccionado = true;
     }
-    
+    catch (error){
+      this.showAlert("Error","Ocurrio un error al tomar la foto");
+    }
   }
 
   //============== Procesar imagen ya obtenida ==============
@@ -66,22 +77,26 @@ export class EscanerPage implements OnInit {
 
     if (this.imageBase64) {
       try {
-        const data: any = await this.ocrService.performOCR(this.imageBase64).toPromise();
-        this.scannedText = data.ParsedResults[0].ParsedText;
+        await this.ocrService.performOCR(this.imageBase64).toPromise().then(
+          (res: any)=>{
+            this.scannedText = res.ParsedResults[0].ParsedText;
 
         //============== Llama a la Api del traductor ==============
         this.traductor.traducir(this.scannedText).subscribe(data => {
           var textoTraducido = data.text[0]
           this.mensajeTraducido = textoTraducido;
-
-          console.log('solamente el texto a continuacion ::: '+textoTraducido); 
-        });//finaliza Api traductor
+         
+        });                              //finaliza Api traductor
+          }
+        ).catch(error=>{
+          throw new Error("El archivo supera el tamaño máximo permitido (1024KB)");
+        });
         if(this.scannedText==""){
           throw new Error("No se pudo obtener texto de esta imagen");
         }
         this.guardado = false;
       } catch (error) {
-        this.showAlert('Escaneo fallido: ', error.message+'. Por favor intene con otra.');
+        this.showAlert('Escaneo fallido: ', error.message +'. Por favor, intene con otra.');
       }
     }
     await loading.dismiss();
@@ -105,16 +120,14 @@ export class EscanerPage implements OnInit {
     let imagePath = `${this.user.uid}/${Date.now()}`;
     let imageUrl = await this.authService.uploadImage(imagePath, this.urlImagen);
     try{
-      this.authService.addDocument(path, {imagen: imageUrl, texto: this.scannedText});
-      this.showAlert('Todo salio bien', 'Se guardaron los datos con exito!');
+      this.authService.addDocument(path, {imagen: imageUrl, texto: this.scannedText, fecha: new Date().toLocaleString()});
+      this.showAlert('Todo salió bien', 'Se guardó el escaneo con éxito!');
       this.guardado = true;
     }
     catch (error){
-      this.showAlert('Guardado fallido: ', error.message+'. Por favor intene otra vez mas tarde.');
+      this.showAlert('Guardado fallido: ', error.message+'. Por favor, intene otra vez más tarde.');
     }
 
     await loading.dismiss();
-
-
   }
 }
