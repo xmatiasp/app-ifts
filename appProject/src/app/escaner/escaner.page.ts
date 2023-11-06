@@ -5,6 +5,7 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { LocalStorageService } from '../services/local-storage.service';
 import { AuthService } from '../services/auth.service';
+import { TraductorService } from '../traductor.service';
 
 @Component({
   selector: 'app-escaner',
@@ -13,7 +14,9 @@ import { AuthService } from '../services/auth.service';
 })
 export class EscanerPage implements OnInit {
   //============== Texto escaneado ==============
-  public scannedText?: string;
+  public scannedText?: string; //             
+  public textoTraducido?: any; //             traductor
+  public mensajeTraducido:string//             traductor
   //============== string que se enviara al servicio de OCR ==============
   public imageBase64: string="";
   //Inicialmente era el nombre del archivo pero con el uso de camara no se podia obtener el nombre
@@ -30,7 +33,8 @@ export class EscanerPage implements OnInit {
   constructor(public router: Router, private ocrService: OcrService,private loadingController: LoadingController,
     private alertController: AlertController,
     private localStorageService: LocalStorageService,
-    private authService: AuthService
+    private authService: AuthService,
+    public traductor: TraductorService
     ) { }
 
   ngOnInit() {
@@ -76,6 +80,13 @@ export class EscanerPage implements OnInit {
         await this.ocrService.performOCR(this.imageBase64).toPromise().then(
           (res: any)=>{
             this.scannedText = res.ParsedResults[0].ParsedText;
+
+        //============== Llama a la Api del traductor ==============
+        this.traductor.traducir(this.scannedText).subscribe(data => {
+          var textoTraducido = data.text[0]
+          this.mensajeTraducido = textoTraducido;
+         
+        });                              //finaliza Api traductor
           }
         ).catch(error=>{
           throw new Error("El archivo supera el tamaño máximo permitido (1024KB)");

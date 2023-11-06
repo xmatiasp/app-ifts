@@ -14,6 +14,8 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentsModule } from './components/components.module';
 
+import { TraductorService } from './traductor.service';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -27,7 +29,7 @@ import { ComponentsModule } from './components/components.module';
     HttpClientModule,
     ComponentsModule
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, TraductorService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
