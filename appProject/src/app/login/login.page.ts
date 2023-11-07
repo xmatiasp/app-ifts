@@ -43,8 +43,11 @@ export class LoginPage implements OnInit {
 
   //============== Funcion para realizar el login ==============
   async login(){
+    
+    //crea instancia de interfaz de carga
     const loading = await this.loadingController.create();
     await loading.present();
+    
     try{
       await this.authService.login(this.credentials.value).then(
         res=>{
@@ -58,7 +61,7 @@ export class LoginPage implements OnInit {
       this.router.navigate(['home']);
     }
     catch (error){
-      this.showAlert('Login fallido', "Intenta de nuevo, máquina");
+      this.showAlert('Login fallido', "Intenta de nuevamente");
     }
     await loading.dismiss();
     

@@ -14,10 +14,8 @@ export class RessetPassPage implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private loadingController: LoadingController,
     private alertController: AlertController,
-    private authService: AuthService,
-    private router: Router
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -26,12 +24,22 @@ export class RessetPassPage implements OnInit {
     });
   }
 //============== Funcion para enviar reset de password ==============
-  async ressetPass(){
-    await this.authService.ressetpassword(this.credentials.value)
-    .then(()=>{
-      this.showAlert('Mail enviado', 'Revisa tu correo para cambiar tu contraseña')
-    })
+async ressetPass() {
+  if (this.credentials.value.email && this.credentials.value.email.includes('@') 
+  && this.credentials.value.email.includes('.')) {
+    try {
+      await this.authService.ressetpassword(this.credentials.value)
+      .then(() => {
+        this.showAlert('Mail enviado', 'Revisa tu correo para cambiar la contraseña');
+      });
+    } catch (error) {
+      console.error('Error inesperado:', error);
+    }
+  } else {
+    // Muestra una alerta si el campo de correo electrónico está vacío
+    this.showAlert('Error', 'Por favor, ingresa una dirección de correo electrónico valida');
   }
+}
 //============== Alerta ==============
     async showAlert(header, message) {
       const alert = await this.alertController.create({
