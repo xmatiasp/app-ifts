@@ -22,12 +22,12 @@ export class SignupPage implements OnInit {
     private router: Router,
     private localStorageService: LocalStorageService
   ) { }
-
+  //Funcion para acceder a campo email
   get email() {
     return this.credentials.get('email');
   }
 
-  //Funcion para acceder a campo email
+  //Funcion para acceder a campo password
   get password() {
     return this.credentials.get('password');
   }
@@ -46,20 +46,30 @@ export class SignupPage implements OnInit {
     const loading = await this.loadingController.create();
     await loading.present();
 
-    const user = await this.authService.register(this.credentials.value);
-    await this.authService.updateUser(this.credentials.value.name);
-
-    let uid= user.user.uid;
-    this.credentials.controls['uid'].setValue(uid);
-    this.setUserInfo(uid);
-
-    await loading.dismiss();
-
-    if(user) {
-      this.router.navigateByUrl('/home', {replaceUrl: true});
-    } else {
-      this.showAlert('Registro fallido', 'Intenta de nuevo, máquina');
+    try{
+      if(this.credentials.get('name').value=='' || this.credentials.get('email').value=='' || this.credentials.get('password').value==''){
+        throw new Error();
+      }
+      const user = await this.authService.register(this.credentials.value);
+      await this.authService.updateUser(this.credentials.value.name);
+  
+      let uid= user.user.uid;
+      this.credentials.controls['uid'].setValue(uid);
+      await this.setUserInfo(uid);
+  
+      await loading.dismiss();
+  
+      if(user) {
+        this.router.navigateByUrl('/home', {replaceUrl: true});
+      } else {
+        this.showAlert('Registro fallido', 'Intenta de nuevo, máquina');
+      }
     }
+    catch(error){
+      this.showAlert('Registro fallido', 'Complete los campos requeridos de manera correcta por favor');
+      await loading.dismiss();
+    }
+
   }
 //============== Alerta ==============
   async showAlert(header, message) {
@@ -79,7 +89,7 @@ export class SignupPage implements OnInit {
       let path =`users/${uid}`;
       delete this.credentials.value.password;
 
-      this.authService.setDocument(path, this.credentials.value).then(async res=>{
+      await this.authService.setDocument(path, this.credentials.value).then(async res=>{
         this.localStorageService.saveInLocalStorage('user', this.credentials.value);
       });
 

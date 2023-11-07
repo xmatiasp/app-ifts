@@ -57,6 +57,7 @@ export class EscanerPage implements OnInit {
   async takeImage(){
     this.urlImagen = "../../assets/images/icono-imagenes.png";
     this.seleccionado = false;
+    this.scannedText = '';
     try{
       const dataUrl = ((await this.takePicture()).dataUrl);
         this.urlImagen = dataUrl;
@@ -82,12 +83,12 @@ export class EscanerPage implements OnInit {
             this.scannedText = res.ParsedResults[0].ParsedText;
 
         //============== Llama a la Api del traductor ==============
-        this.traductor.traducir(this.scannedText).subscribe(data => {
-          var textoTraducido = data.text[0]
-          this.mensajeTraducido = textoTraducido;
-         
-        });                              //finaliza Api traductor
-          }
+          this.traductor.traducir(this.scannedText).subscribe(data => {
+            var textoTraducido = data.text[0]
+            this.mensajeTraducido = textoTraducido;
+          
+          });//finaliza Api traductor
+        }
         ).catch(error=>{
           throw new Error("El archivo supera el tamaño máximo permitido (1024KB)");
         });

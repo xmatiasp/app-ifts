@@ -16,9 +16,7 @@ export class TraductorService {
 
   constructor(
     public http: HttpClient
-  ) {
-    console.log('Inicia traductor');
-  }
+  ) {}
 
 
   traducir(texto: string) : Observable<TraduccionResponse>
@@ -30,21 +28,5 @@ export class TraductorService {
 
     return this.http.get<TraduccionResponse>(apiUrl);  
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
