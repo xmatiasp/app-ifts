@@ -49,24 +49,22 @@ export class PerfilPage implements OnInit {
     let user = this.user();
     let path = `users/${user.uid}`
 
-
-    const dataUrl = ((await this.takePicture()).dataUrl);
-    let imagePath = `${user.uid}/perfil`;
-    user.image = await this.authService.uploadImage(imagePath, dataUrl);
-
-    const loading = await this.loadingController.create();
-    await loading.present();
-
     try{
-      await this.authService.updateDocument(path, {image: user.image});
-      this.localStorageService.saveInLocalStorage('user', user);
-      this.showAlert('Exito!', 'Se guardo la imagen correctamente');
+      const dataUrl = ((await this.takePicture()).dataUrl);
+      let imagePath = `${user.uid}/perfil`;
+      user.image = await this.authService.uploadImage(imagePath, dataUrl);
+
+      const loading = await this.loadingController.create();
+      await loading.present();
+
+        await this.authService.updateDocument(path, {image: user.image});
+        this.localStorageService.saveInLocalStorage('user', user);
+        this.showAlert('Exito!', 'Se guardo la imagen correctamente');
+        await loading.dismiss();
     }
     catch (error){
       this.showAlert('Guardado fallido: ', error.message+'. Por favor intene otra vez mas tarde.');
     }
-
-    await loading.dismiss();
   }
 
     //============== Alerta ==============

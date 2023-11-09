@@ -47,7 +47,9 @@ export class SignupPage implements OnInit {
     await loading.present();
 
     try{
-      if(this.credentials.get('name').value=='' || this.credentials.get('email').value=='' || this.credentials.get('password').value==''){
+      if(this.credentials.get('name').value=='' || this.credentials.get('email').value=='' || this.credentials.get('password').value==''
+      || !this.credentials.get('email').value.includes('@') || !this.credentials.get('email').value.includes('.')
+      ){
         throw new Error();
       }
       const user = await this.authService.register(this.credentials.value);
